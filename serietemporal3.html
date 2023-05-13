@@ -1550,7 +1550,12 @@ España, los cuales han sido tomados de: <a href="https://www.epdata.es/datos/ed
 <h4><strong>4.2.1 Carga de la base de datos</strong></h4>
 <pre class="r"><code>library(readxl)
 data &lt;- read_excel(&quot;C:/Users/mjpenalozap/Desktop/base de serie de datos.xlsx&quot;)
-View(data)</code></pre>
+View(data)
+names(data)</code></pre>
+<pre><code>## [1] &quot;Año&quot;                                 &quot;Periodo&quot;                            
+## [3] &quot;Primarios&quot;                           &quot;Primer ciclo de Secundaria&quot;         
+## [5] &quot;Segundo ciclo de Secundaria&quot;         &quot;Primer ciclo de educación superior&quot; 
+## [7] &quot;Segundo ciclo de educación superior&quot;</code></pre>
 </div>
 </div>
 <div id="modelado-de-series-de-tiempo" class="section level3">

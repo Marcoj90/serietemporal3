@@ -44,6 +44,7 @@ se recolectó información sobre el nivel educativo de la población en España,
 library(readxl)
 data <- read_excel("C:/Users/mjpenalozap/Desktop/base de serie de datos.xlsx")
 View(data)
+names(data)
 ```
 
 
