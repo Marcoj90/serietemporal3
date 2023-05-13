@@ -1,0 +1,62 @@
+---
+title: "Evolucion del nivel de estudios alcanzado por la poblacion española"
+author: "Marco Javier Peñaloza Pérez"
+date: "2023-04-25"
+subtitle: Serie de tiempo
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Introducción**
+
+La evolución de la educación en España desde la década de 1960 ha sido un proceso significativo en la historia del país. Durante este período, la educación en España ha experimentado una serie de cambios importantes que han transformado radicalmente el sistema educativo y la forma en que se imparte la enseñanza.
+
+## **1.Definición del problema** 
+
+Análisis de la evolución del rendimiento académico de los estudiantes de una institución educativa a lo largo del tiempo.
+
+
+## **2. Justificación**
+
+La propuesta de análisis de series de tiempo en educación es importante debido a que permite obtener información valiosa para la toma de decisiones y para la investigación educativa, lo que contribuye al mejoramiento del rendimiento académico de los estudiantes.
+
+## **3. Objetivo**
+
+Conocer la evolución temporal de los niveles de educación de España entre los años 1960 a 2020.
+
+## **4. Metodología:**
+
+### **4.1 Recopilación de datos:** 
+
+se recolectó información sobre el nivel educativo de la población en España, los cuales han sido tomados de: https://www.epdata.es/datos/educacion-espana-mundo-datos-graficos/274
+
+### **4.2 Análisis exploratorio de datos:**
+
+#### **4.2.1 Carga de la base de datos**
+
+```{r}
+library(readxl)
+data <- read_excel("C:/Users/mjpenalozap/Desktop/base de serie de datos.xlsx")
+View(data)
+```
+
+
+
+### **4.3 Modelado de series de tiempo:** 
+
+se utilizarán técnicas de modelado de series de tiempo para analizar el comportamiento del rendimiento académico de los estudiantes a lo largo del tiempo y predecir su evolución futura.
+
+
+## **5. Conclusiones:**
+
+
+
+## **6. Referencias Bibliográficas**
+
+1. EpData. (2019). Evolución del nivel de estudios alcanzado por la población española [Data set]. EpData - La actualidad informativa en datos estadísticos de Europa Press.
