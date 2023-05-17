@@ -41,10 +41,31 @@ se recolectó información sobre el nivel educativo de la población en España,
 #### **4.2.1 Carga de la base de datos**
 
 ```{r}
+library(tidyverse)
 library(readxl)
-data <- read_excel("C:/Users/mjpenalozap/Desktop/base de serie de datos.xlsx")
-View(data)
-names(data)
+data1 <- read_excel("C:/Users/mjpenalozap/Desktop/base de serie de datos.xlsx")
+head(data, n=6)
+```
+### **4.2.2. Resumen estadístico de los datos**
+
+```{r}
+summary(data1)
+```
+### **4.2.3. Histogramas de las variables**
+
+```{r}
+library(ggplot2)
+library(gridExtra)
+variables_numericas <- sapply(data1, is.numeric)
+graficos <- list()
+for (variable in names(data1)[variables_numericas]) {
+  grafico <- ggplot(data = data1, aes(x = data1[[variable]])) +
+    geom_histogram(fill = "blue", color = "black") +
+    labs(x = variable, y = "Frecuencia", title = paste("", variable))
+  
+  graficos[[variable]] <- grafico
+}
+gridExtra::grid.arrange(grobs = graficos, ncol = 2)
 ```
 
 
