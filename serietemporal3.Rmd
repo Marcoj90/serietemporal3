@@ -40,20 +40,19 @@ se recolectó información sobre el nivel educativo de la población en España,
 
 #### **4.2.1 Carga de la base de datos**
 
-```{r}
-library(tidyverse)
+```{r, echo = TRUE, warning=FALSE, cache=FALSE, message=FALSE}
 library(readxl)
 data1 <- read_excel("C:/Users/mjpenalozap/Desktop/base de serie de datos.xlsx")
 head(data, n=6)
 ```
 ### **4.2.2. Resumen estadístico de los datos**
 
-```{r}
+```{r, echo = FALSE, warning=FALSE, cache=FALSE, message=FALSE}
 summary(data1)
 ```
 ### **4.2.3. Histogramas de las variables**
 
-```{r}
+```{r, echo = FALSE, warning=FALSE, cache=FALSE, message=FALSE}
 library(ggplot2)
 library(gridExtra)
 variables_numericas <- sapply(data1, is.numeric)
