@@ -1518,19 +1518,31 @@ por la poblacion española</h1>
 sido un proceso significativo en la historia del país. Durante este
 período, la educación en España ha experimentado una serie de cambios
 importantes que han transformado radicalmente el sistema educativo y la
-forma en que se imparte la enseñanza.</p>
+forma en que se imparte la enseñanza, en el siguiente trabajo se realiza
+una exploración de una base de datos recogida con los porcentajes de
+habitantes que han alcanzado un nivel máximo de educación y cómo a
+través del tiempo se ha visto una mejora importante mejorando los índice
+de educación.</p>
 </div>
 <div id="definición-del-problema" class="section level2">
 <h2><strong>1.Definición del problema</strong></h2>
-<p>Análisis de la evolución del rendimiento académico de los estudiantes
-de una institución educativa a lo largo del tiempo.</p>
+<p>La formación académica de las personas es una variable muy importante
+en la evolución de la sociedad, al pasar los años las diferentes
+naciones han implementado mecanismos que buscan que los habitantes de un
+país mejores sus niveles de educación. Tal es el caso de la población
+española, de la cual, se tiene una base de datos con los porcentaje de
+personas que pertenecen a un determinado nivel académico y que se ha
+visto evolucionado a medida que transcurre el tiempo, por tanto, se hace
+interesante hacer una exploración y análisis de la serie temporal para
+sacar conclusiones sobre el progreso y hacer estimaciones a futuro.</p>
 </div>
 <div id="justificación" class="section level2">
 <h2><strong>2. Justificación</strong></h2>
-<p>La propuesta de análisis de series de tiempo en educación es
-importante debido a que permite obtener información valiosa para la toma
-de decisiones y para la investigación educativa, lo que contribuye al
-mejoramiento del rendimiento académico de los estudiantes.</p>
+<p>La propuesta de análisis de series de tiempo en educación en la
+población española es importante debido a que permite obtener
+información valiosa sobre la evolución de los niveles académicos
+mediante el análisis temporal y hacer pronósticos sobre lo que se puede
+esperar del fenómeno en si.</p>
 </div>
 <div id="objetivo" class="section level2">
 <h2><strong>3. Objetivo</strong></h2>
@@ -1541,8 +1553,8 @@ entre los años 1960 a 2020.</p>
 <h2><strong>4. Metodología:</strong></h2>
 <div id="recopilación-de-datos" class="section level3">
 <h3><strong>4.1 Recopilación de datos:</strong></h3>
-<p>se recolectó información sobre el nivel educativo de la población en
-España, los cuales han sido tomados de: <a href="https://www.epdata.es/datos/educacion-espana-mundo-datos-graficos/274" class="uri">https://www.epdata.es/datos/educacion-espana-mundo-datos-graficos/274</a></p>
+<p>Se recolectó información sobre el nivel educativo de la población en
+España, los cuales han sido tomados de la página: <a href="https://www.epdata.es/datos/educacion-espana-mundo-datos-graficos/274" class="uri">https://www.epdata.es/datos/educacion-espana-mundo-datos-graficos/274</a></p>
 </div>
 <div id="análisis-exploratorio-de-datos" class="section level3">
 <h3><strong>4.2 Análisis exploratorio de datos:</strong></h3>
@@ -1558,6 +1570,10 @@ head(data, n=6)</code></pre>
 ## 4     fileExt &lt;- function(x) {                                              
 ## 5         db &lt;- grepl(&quot;\\\\.[^.]+\\\\.(gz|bz2|xz)$&quot;, x)                     
 ## 6         ans &lt;- sub(&quot;.*\\\\.&quot;, &quot;&quot;, x)</code></pre>
+<p>La base de datos nos da información sobre la fecha en que fueron
+recogidos los informes sobre los porcentajes de habitantes en españa que
+pertenecen a los niveles de educación primaria, secundaria y
+universitario.</p>
 </div>
 </div>
 <div id="resumen-estadístico-de-los-datos" class="section level3">
@@ -1583,6 +1599,12 @@ head(data, n=6)</code></pre>
 ##  Mean   : 5.958                     
 ##  3rd Qu.: 9.182                     
 ##  Max.   :15.640</code></pre>
+<p>Se puede observar que lo datos han sido recogidos entre los años 1960
+y 2019, existen 5 niveles de educación entre los que se encuentran:
+Primaria Primer ciclo de secundaria Segundo ciclo de secundaria Primer
+ciclo de educación superior Segundo ciclo de educación superior</p>
+<p>En cada nivel se observa un resumen de 5 puntos con los valores
+mínimo, máximo y los tres cuartiles.</p>
 </div>
 <div id="histogramas-de-las-variables" class="section level3">
 <h3><strong>4.2.3. Histogramas de las variables</strong></h3>

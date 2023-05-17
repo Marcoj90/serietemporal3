@@ -15,16 +15,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## **Introducción**
 
-La evolución de la educación en España desde la década de 1960 ha sido un proceso significativo en la historia del país. Durante este período, la educación en España ha experimentado una serie de cambios importantes que han transformado radicalmente el sistema educativo y la forma en que se imparte la enseñanza.
+La evolución de la educación en España desde la década de 1960 ha sido un proceso significativo en la historia del país. Durante este período, la educación en España ha experimentado una serie de cambios importantes que han transformado radicalmente el sistema educativo y la forma en que se imparte la enseñanza, en el siguiente trabajo se realiza una exploración de una base de datos recogida con los porcentajes de habitantes que han alcanzado un nivel máximo de educación y cómo a través del tiempo se ha visto una mejora importante mejorando los índice de educación.
 
 ## **1.Definición del problema** 
 
-Análisis de la evolución del rendimiento académico de los estudiantes de una institución educativa a lo largo del tiempo.
+La formación académica de las personas es una variable muy importante en la evolución de la sociedad, al pasar los años las diferentes naciones han implementado mecanismos que buscan que los habitantes de un país mejores sus niveles de educación. Tal es el caso de la población española, de la cual, se tiene una base de datos con los porcentaje de personas que pertenecen a un determinado nivel académico y que se ha visto evolucionado a medida que transcurre el tiempo, por tanto, se hace interesante hacer una exploración y análisis de la serie temporal para sacar conclusiones sobre el progreso y hacer estimaciones a futuro.
 
 
 ## **2. Justificación**
 
-La propuesta de análisis de series de tiempo en educación es importante debido a que permite obtener información valiosa para la toma de decisiones y para la investigación educativa, lo que contribuye al mejoramiento del rendimiento académico de los estudiantes.
+La propuesta de análisis de series de tiempo en educación en la población española es importante debido a que permite obtener información valiosa sobre la evolución de los niveles académicos mediante el análisis temporal y hacer pronósticos sobre lo que se puede esperar del fenómeno en si.
 
 ## **3. Objetivo**
 
@@ -34,7 +34,7 @@ Conocer la evolución temporal de los niveles de educación de España entre los
 
 ### **4.1 Recopilación de datos:** 
 
-se recolectó información sobre el nivel educativo de la población en España, los cuales han sido tomados de: https://www.epdata.es/datos/educacion-espana-mundo-datos-graficos/274
+Se recolectó información sobre el nivel educativo de la población en España, los cuales han sido tomados de la página: https://www.epdata.es/datos/educacion-espana-mundo-datos-graficos/274
 
 ### **4.2 Análisis exploratorio de datos:**
 
@@ -45,13 +45,22 @@ library(readxl)
 data1 <- read_excel("C:/Users/mjpenalozap/Desktop/estudios en españa.xlsx")
 head(data, n=6)
 ```
-
+La base de datos nos da información sobre la fecha en que fueron recogidos los informes sobre los porcentajes de habitantes en españa que pertenecen a los niveles de educación primaria, secundaria y universitario.
 
 ### **4.2.2. Resumen estadístico de los datos**
 
 ```{r, echo = FALSE, warning=FALSE, cache=FALSE, message=FALSE}
 summary(data1)
 ```
+Se puede observar que lo datos han sido recogidos entre los años 1960 y 2019, existen 5 niveles de educación entre los que se encuentran:
+Primaria
+Primer ciclo de secundaria
+Segundo ciclo de secundaria 
+Primer ciclo de educación superior
+Segundo ciclo de educación superior
+
+En cada nivel se observa un resumen de 5 puntos con los valores mínimo, máximo y los tres cuartiles.
+
 ### **4.2.3. Histogramas de las variables**
 
 ```{r, echo = FALSE, warning=FALSE, cache=FALSE, message=FALSE}
