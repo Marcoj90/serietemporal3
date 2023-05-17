@@ -12,6 +12,14 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+<style>
+.justify-text {
+  text-align: justify;
+  text-justify: inter-word;
+}
+</style>
+
+<div class="justify-text">
 
 ## **Introducción**
 
@@ -80,33 +88,43 @@ gridExtra::grid.arrange(grobs = graficos, ncol = 2)
 
 ### **4.2.4 Creación del objeto ts**
 
-### **Modificación de la base de datos:**
+Se realiza una modificación de la base de datos. Entre los cambios están:
+
+Cambiar la variable temporal al formato de fecha.
+Consolidad la variable de interés, que en este análisis se ha seleccionado Primaria.
+Construir el objeto ts.
+
 
 ```{r echo=FALSE, warning=FALSE}
-# Se cambia a formato de fecha
 data1$fecha <- as.Date(paste0(data1$fecha))
 
-# Se consolida la variable de interés
 data1 <- aggregate(Primarios ~ fecha, data = data1, sum)
 
-# Construir el objeto ts 
 indice.ts <- ts(data1$Primarios, start = c(2018,1), frequency = 12)
 indice.ts
+```
 
-#Gráfica
+Ahora se realiza una gráfica del objeto ts:
+
+```{r}
 plot(indice.ts, main = "",ylab="valor",col="deepskyblue",xlab="fecha")
 title(main = "Evolución de los estudios a nivel de Primaria")
 ```
+
 **Análisis de la gráfica**
+
 Se puede observar que a medida que han pasado los años el porcentaje de personas que sólo tenían nivel de primaria ha disminuido en España, esto quiere decir que el nivel académico fue mejorando con el tiempo.
 
-**Grafica de Rezagos**
+
 
 ```{r echo=FALSE, warning=FALSE}
-lag.plot(indice.ts, 9 , do.lines = FALSE)
+lag.plot(indice.ts, 9 ,main = "Gráfico de Rezagos",  do.lines = FALSE)
 ```
 
-### **Media Móvil**
+Se observa una tendencia ascendente.
+
+### **4.2.5. Media Móvil**
+
 Se procede a crear 3 medias móviles:
 
 ```{r}
