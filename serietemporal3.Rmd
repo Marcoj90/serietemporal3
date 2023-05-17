@@ -154,9 +154,9 @@ legend("topleft",
        lty = 1, col = 1:4)
 ```
 
-### **5 Estacionalidad y Descomposicion:** 
+## **5 Estacionalidad y Descomposicion:** 
 
-#### **5.1 Estacionalidad**
+### **5.1 Estacionalidad**
 
 ```{r}
 library(ggseas)
@@ -167,13 +167,14 @@ ggseasonplot(x = indice.ts,
 
 Se observa que en todos los años hay una disminución de los porcentajes en cada nivel académico de primaria.
 
-#### **5.2. Descomposición del objeto y análisis**
+### **5.2. Descomposición del objeto y análisis**
 
 ```{r echo=FALSE, warning=FALSE}
 
 descomposicion <- decompose(x=indice.ts)
 plot(descomposicion, xlab="Tiempo")
 ```
+
 ### **5.3 Prueba de Estacionalidad**
 
 ```{r echo=FALSE, warning=FALSE}
@@ -182,12 +183,14 @@ adf.test(indice.ts)
 ```
 Se concluye que con un nivel de significancia del 5% existe evidencia estadística para aceptar la hipótesis nula de que no hay estacionalidad en el conjunto de datos.
 
-### **5.4. Autocorrelacion**
+
+### **5.4. Autocorrelación**
 
 
 ```{r echo=FALSE, warning=FALSE}
 tsdisplay(indice.ts,lag.max = 20)
 ```
+
 
 ### **5.5 Transformación**
 
@@ -212,7 +215,7 @@ plot(nueva_descomp)
 
 ### **5.6 Validación de la nueva serie de tiempo transformada**
 
-** Test de estacionalidad**
+**Test de estacionalidad**
 
 ```{r echo=FALSE, warning=FALSE}
 adf.test(modelo_ts)
