@@ -55,7 +55,7 @@ head(data, n=6)
 ```
 La base de datos nos da información sobre la fecha en que fueron recogidos los informes sobre los porcentajes de habitantes en españa que pertenecen a los niveles de educación primaria, secundaria y universitario.
 
-### **4.2.2. Resumen estadístico de los datos**
+#### **4.2.2. Resumen estadístico de los datos**
 
 ```{r, echo = FALSE, warning=FALSE, cache=FALSE, message=FALSE}
 summary(data1)
@@ -69,7 +69,7 @@ Segundo ciclo de educación superior
 
 En cada nivel se observa un resumen de 5 puntos con los valores mínimo, máximo y los tres cuartiles.
 
-### **4.2.3. Histogramas de las variables**
+#### **4.2.3. Histogramas de las variables**
 
 ```{r, echo = FALSE, warning=FALSE, cache=FALSE, message=FALSE}
 library(ggplot2)
@@ -86,7 +86,7 @@ for (variable in names(data1)[variables_numericas]) {
 gridExtra::grid.arrange(grobs = graficos, ncol = 2)
 ```
 
-### **4.2.4 Creación del objeto ts**
+#### **4.2.4 Creación del objeto ts**
 
 Se realiza una modificación de la base de datos. Entre los cambios están:
 
@@ -123,7 +123,7 @@ lag.plot(indice.ts, 9 ,main = "Gráfico de Rezagos",  do.lines = FALSE)
 
 Se observa una tendencia ascendente.
 
-### **4.2.5. Media Móvil**
+#### **4.2.5. Media Móvil**
 
 Se procede a crear 3 medias móviles:
 
@@ -154,14 +154,75 @@ legend("topleft",
        lty = 1, col = 1:4)
 ```
 
-### **4.3 Modelado de series de tiempo:** 
+### **5 Estacionalidad y Descomposicion:** 
 
-se utilizarán técnicas de modelado de series de tiempo para analizar el comportamiento del rendimiento académico de los estudiantes a lo largo del tiempo y predecir su evolución futura.
+#### **5.1 Estacionalidad**
+
+```{r}
+library(ggseas)
+library(forecast)
+ggseasonplot(x = indice.ts,
+             main= "Análisis por Fecha")
+```
+
+Se observa que en todos los años hay una disminución de los porcentajes en cada nivel académico de primaria.
+
+#### **5.2. Descomposición del objeto y análisis**
+
+```{r echo=FALSE, warning=FALSE}
+
+descomposicion <- decompose(x=indice.ts)
+plot(descomposicion, xlab="Tiempo")
+```
+### **5.3 Prueba de Estacionalidad**
+
+```{r echo=FALSE, warning=FALSE}
+library(tseries)
+adf.test(indice.ts)
+```
+Se concluye que con un nivel de significancia del 5% existe evidencia estadística para aceptar la hipótesis nula de que no hay estacionalidad en el conjunto de datos.
+
+### **5.4. Autocorrelacion**
 
 
-## **5. Conclusiones:**
+```{r echo=FALSE, warning=FALSE}
+tsdisplay(indice.ts,lag.max = 20)
+```
 
+### **5.5 Transformación**
 
+Se ajusta la estacionalidad de la serie temporal.
+```{r}
+indice_adj <- seasadj(descomposicion)
+```
+
+Se remueve la tedencia (trend) para el modelo.
+
+```{r}
+modelo_ts <- diff(indice_adj)
+```
+
+Se grafica la nueva descomposición.
+
+```{r echo=FALSE, warning=FALSE}
+
+nueva_descomp <-decompose(modelo_ts)
+plot(nueva_descomp)
+```
+
+### **5.6 Validación de la nueva serie de tiempo transformada**
+
+** Test de estacionalidad**
+
+```{r echo=FALSE, warning=FALSE}
+adf.test(modelo_ts)
+```
+
+**Test de autocorrelación**
+
+```{r echo=FALSE, warning=FALSE}
+tsdisplay(modelo_ts,lag.max = 20)
+```
 
 ## **6. Referencias Bibliográficas**
 
