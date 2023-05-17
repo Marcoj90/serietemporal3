@@ -42,9 +42,11 @@ se recolectó información sobre el nivel educativo de la población en España,
 
 ```{r, echo = TRUE, warning=FALSE, cache=FALSE, message=FALSE}
 library(readxl)
-data1 <- read_excel("C:/Users/mjpenalozap/Desktop/base de serie de datos.xlsx")
+data1 <- read_excel("C:/Users/mjpenalozap/Desktop/estudios en españa.xlsx")
 head(data, n=6)
 ```
+
+
 ### **4.2.2. Resumen estadístico de los datos**
 
 ```{r, echo = FALSE, warning=FALSE, cache=FALSE, message=FALSE}
@@ -67,7 +69,63 @@ for (variable in names(data1)[variables_numericas]) {
 gridExtra::grid.arrange(grobs = graficos, ncol = 2)
 ```
 
+### **4.2.4 Creación del objeto ts**
 
+### **Modificación de la base de datos:**
+
+```{r echo=FALSE, warning=FALSE}
+# Se cambia a formato de fecha
+data1$fecha <- as.Date(paste0(data1$fecha))
+
+# Se consolida la variable de interés
+data1 <- aggregate(Primarios ~ fecha, data = data1, sum)
+
+# Construir el objeto ts 
+indice.ts <- ts(data1$Primarios, start = c(2018,1), frequency = 12)
+indice.ts
+
+#Gráfica
+plot(indice.ts, main = "",ylab="valor",col="deepskyblue",xlab="fecha")
+title(main = "Evolución de los estudios a nivel de Primaria")
+```
+**Análisis de la gráfica**
+Se puede observar que a medida que han pasado los años el porcentaje de personas que sólo tenían nivel de primaria ha disminuido en España, esto quiere decir que el nivel académico fue mejorando con el tiempo.
+
+**Grafica de Rezagos**
+
+```{r echo=FALSE, warning=FALSE}
+lag.plot(indice.ts, 9 , do.lines = FALSE)
+```
+
+### **Media Móvil**
+Se procede a crear 3 medias móviles:
+
+```{r}
+library(zoo)
+mediamovil1 <- rollmean(indice.ts,k=3)
+cat("Media Movil con 3 meses: ", mediamovil1,"\n\n")
+
+mediamovil2 <- rollmean(indice.ts,k=4)
+cat("Media Movil con 4 meses: ", mediamovil2,"\n\n")
+
+mediamovil3 <- rollmean(indice.ts,k=6)
+cat("Media Movil con 6 meses: ", mediamovil3)
+```
+**Comparación de las medias con los datos originales de la base**
+
+
+```{r echo=FALSE, warning=FALSE}
+
+plot(1:length(indice.ts), indice.ts, type = "l",   
+     ylim = c(min(indice.ts), max(indice.ts)),
+     xlab = "Lineas de Serie de Tiempo", ylab = "Valores")
+lines(1:length(mediamovil1),mediamovil1,type = "l", col=2)
+lines(1:length(mediamovil2),mediamovil2,type = "l", col=3)
+lines(1:length(mediamovil3),mediamovil3,type = "l", col=4)
+legend("topleft",
+       c("Indice.Ts", "Media Movil 3 Meses", "Media Movil 4 Meses", "Media Movil 6 Meses"),
+       lty = 1, col = 1:4)
+```
 
 ### **4.3 Modelado de series de tiempo:** 
 
