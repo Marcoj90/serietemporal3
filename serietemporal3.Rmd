@@ -231,6 +231,111 @@ adf.test(modelo_ts)
 tsdisplay(modelo_ts,lag.max = 20)
 ```
 
-## **4. Referencias Bibliográficas**
+# **4. Holt-Winters(HW) y Suavizamiento Exponencial**
+
+## **4.1 Holt-Winters(HW)**
+
+Holt-Winters es un método ampliamente utilizado en el análisis de series de tiempo para realizar pronósticos a corto plazo. Esto permite predecir cambios en la tendencia a lo largo del tiempo, lo cual es especialmente útil cuando se trabaja con datos que presentan una tendencia ascendente o descendente.
+
+```{r message=FALSE, warning=FALSE}
+# Aplicar la metodología de Holt-Winters
+hw_model <- HoltWinters(indice.ts)
+
+# Obtener las componentes del modelo (tendencia, estacionalidad y residuos)
+trend <- hw_model$components$trend
+seasonal <- hw_model$components$seasonal
+residuals <- hw_model$components$random
+
+# Imprimir las componentes
+print("Tendencia:")
+print(trend)
+print("Estacionalidad:")
+print(seasonal)
+print("Residuos:")
+print(residuals)
+
+```
+
+## **4.2 Suavizamiento Exponencial**
+
+Holt-Winters utiliza técnicas de suavizado exponencial para predecir los valores futuros de una serie de tiempo. Esto implica asignar pesos exponenciales a los puntos de datos históricos, lo que da mayor importancia a los datos más recientes. Esta característica es útil para adaptarse a los cambios en los patrones de la serie de tiempo a medida que los datos más recientes tienen un impacto más significativo en las predicciones.
+
+```{r message=FALSE, warning=FALSE}
+# Aplicar suavizamiento exponencial
+smoothed <- HoltWinters(indice.ts, beta = FALSE, gamma = FALSE)$fitted
+
+# Imprimir la serie de tiempo suavizada
+print("Serie de tiempo suavizada:")
+print(smoothed)
+
+```
+
+
+El suavizamiento exponencial a la serie de tiempo del indice.ts, permite obtener la tendencia, la estacionalidad, los residuos y la serie de tiempo suavizada. Lo cual permite comprender la estructura y los patrones de la serie de tiempo.
+
+
+```{r message=FALSE, warning=FALSE}
+
+hw_model=HoltWinters(indice.ts, seasonal = "additive")
+plot(hw_model)
+```
+
+Se genera un gráfico en color rojo que representa una serie de datos aproximada a los datos originales en color negro. 
+
+```{r message=FALSE, warning=FALSE}
+
+plot(fitted(hw_model))
+```
+
+En el gráfico se observa la descomposición en las cuatro componentes. El método Holt Winters nos permite realizar predicciones utilizando la serie de tiempo. A continuación, se muestra el proceso de generación de predicciones.
+
+```{r message=FALSE, warning=FALSE}
+
+pred=predict(hw_model, 12, prediction.interval = TRUE)
+pred
+```
+
+Ejemplo de predicciones en los  12 meses siguientes (May 2023 - Apr 2024).
+
+
+```{r message=FALSE, warning=FALSE}
+
+plot(hw_model, pred)
+```
+
+En la gráfica se muestran la tendencia de los valores pronosticados junto con sus intervalos de confianza.
+
+
+Tambien podemos utilizar la funcion hw
+
+```{r message=FALSE, warning=FALSE}
+
+# Calcular el modelo de Holt-Winters utilizando la función hw():
+  
+hw_model1 <- HoltWinters(indice.ts)
+hw_model1
+```
+
+se generan predicciones para los próximos 12 periodos.
+
+```{r message=FALSE, warning=FALSE}
+
+# Obtener las predicciones del modelo para un horizonte de tiempo determinado:
+library(forecast) 
+predictions <- forecast(hw_model1, h = 12)  # Predicciones para los próximos 12 periodos
+```
+
+
+Esto generará un gráfico que muestra la serie de tiempo original y las predicciones del modelo de Holt-Winters.
+
+
+```{r message=FALSE, warning=FALSE}
+
+plot(hw_model1, main = "Modelo de Holt-Winters: Serie de tiempo y predicciones")
+lines(predictions$mean, col = "blue")
+legend("bottomright", legend = c("Serie de tiempo", "Predicciones"), col = c("black", "blue"), lty = 1)
+```
+
+# **5. Referencias Bibliográficas**
 
 1. EpData. (2019). Evolución del nivel de estudios alcanzado por la población española [Data set]. EpData - La actualidad informativa en datos estadísticos de Europa Press.
