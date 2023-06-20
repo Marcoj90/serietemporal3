@@ -431,17 +431,194 @@ pred.arima$mean
 
 ```
 
-Ahora hagamos las validaciones del modelo:
+# **6. Modelos Logarítmicos, Prophet y otros**
 
-```{r echo=FALSE, warning=FALSE}
-library(tsoutliers)
-#midata <- tsoutliers::tso(estacion.ts)
+## **6.1 Transformación Logarítmica**
+ 
+```{r}
+# Aplicar la transformación logarítmica
+serie_log <- log(indice.ts)
+
+# Graficar la serie transformada
+plot(serie_log, main = "Serie de tiempo con transformación Logarítmica")
+```
+
+## **6.2 Transformación con raíz cuadrada**
+
+```{r}
+# Aplicar la transformación de raíz cuadrada
+serie_sqrt <- sqrt(indice.ts)
+
+# Graficar la serie transformada
+plot(serie_sqrt, main = "Serie de tiempo con transformación de Raíz Cuadrada)")
+```
+
+## **6.3 Modelo estacionario: Enfoque de regresión lineal clásico**
+
+```{r}
+# Crear una variable de tiempo numérica
+time <- 1:length(indice.ts)
+
+# Ajustar un modelo lineal y estacionario
+lm_model <- lm(indice.ts ~ time)
+
+# Obtener los coeficientes del modelo
+coef_lm <- coef(lm_model)
+
+# Graficar la serie de tiempo y el modelo ajustado
+plot(indice.ts, type = "l", col = "#00a0dc", main = "Ajuste lineal y estacionario")
+lines(fitted(lm_model), col = "red")
+```
+
+## **6.4 Algoritmo Facebook´s Prophet**
+
+```{r}
+
+library(prophet)
 
 
+# Crear un dataframe con la serie de tiempo
+df <- data.frame(ds = data1$fecha,
+                 y = data1$Primarios)
+
+# Ajustar el modelo Prophet
+prophet_model <- prophet(df, weekly.seasonality = TRUE, daily.seasonality = TRUE)
+
+# Realizar un pronóstico para los próximos 12 meses
+future <- make_future_dataframe(prophet_model, periods = 12)
+forecast <- predict(prophet_model, future)
+
+# Graficar el pronóstico
+plot(prophet_model, forecast)
+```
+
+# **7. Modelo con Redes Neuronales**
+
+## **7.1 Creacion de la TS normalizada**
+
+```{r}
+Z <- as.ts(indice.ts,F)
+S <- (Z-min(Z))/(max(Z)-min(Z))
+plot(S)
+```
+
+## **7.2 División de la serie**
+
+```{r}
+lineas_totales <-length(S)
+t_train <- round(lineas_totales*0.75, digits=0)
+l_train <- 0:(t_train-1) 
+t_test <- (t_train):lineas_totales
+t_test
+```
+## **7.3 Creación de Nodos**
+
+```{r}
+library(forecast)
+library(timsac)
+library(ggplot2)
+library(changepoint)
+library(RSNNS)
+library(quantmod)
+y <- as.zoo(S)
+x1 <- Lag(y, k = 1)
+x2 <- Lag(y, k = 2)
+x3 <- Lag(y, k = 3)
+x4 <- Lag(y, k = 4)
+x5 <- Lag(y, k = 5)
+x6 <- Lag(y, k = 6)
+x7 <- Lag(y, k = 7)
+x8 <- Lag(y, k = 8)
+x9 <- Lag(y, k = 9)
+x10 <- Lag(y, k = 10)
+x11 <- Lag(y, k = 11)
+x12 <- Lag(y, k = 12)
+slogN <- cbind(y,x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12)
+# Elimenemos los valores desplazados
+slogN <- slogN[-(1:12),]
+```
+```{r}
+inputs <- slogN[,2:13]
+outputs <- slogN[,1]
+```
+
+## **7.4 Entrenamiento del modelo Elman**
+
+```{r}
+set.seed(42)
+fit <- fit<-elman(inputs[t_train],outputs[t_train],size=c(110,5),learnFuncParams=c(0.1),maxit=100000)
+```
+
+```{r}
+plotIterativeError(fit, main = "Error Iterativo para neuronas 110,5")
+```
+
+**Predicción de la serie**
+
+```{r}
+y <- as.vector(outputs[-t_test])
+plot(y,type="l")
+pred <- predict(fit, inputs[-t_test])
+lines(pred,col = "red")
+```
+```{r}
+predictions <- predict(fit,inputs[-t_train])
+```
+
+```{r}
+mod_elman <- predictions*(max(Z)-min(Z))+min(Z)
+mod_elman
+```
+
+```{r}
+x <- 1:(lineas_totales+length(mod_elman))
+y <- c(as.vector(Z),mod_elman)
+plot(x[1:lineas_totales], y[1:lineas_totales],col = "blue", type="l")
+lines( x[(lineas_totales):length(x)], y[(lineas_totales):length(x)], col="red")
+```
+
+## **7.5 Modelo Jordan**
+
+```{r}
+fit<-jordan(inputs[t_train],
+    outputs[t_train],
+    size=12,
+    learnFuncParams=c(0.01),
+    maxit=100000)
+```
+
+**Error Iterativo**
+
+```{r}
+plotIterativeError(fit, main = "Error iterativo para 12 neuronas")
+```
+
+**Comportamiento del error**
+
+```{r}
+y <- as.vector(outputs[-t_test])
+plot(y,type="l")
+pred <- predict(fit, inputs[-t_test])
+lines(pred,col = "red")
+```
+
+**Predicción**
+
+```{r}
+predictions <- predict(fit,inputs[-t_train])
+mod_jordan <- predictions*(max(Z)-min(Z))+min(Z)
+mod_jordan
+```
+
+```{r}
+x <- 1:(lineas_totales+length(mod_jordan))
+y <- c(as.vector(Z),mod_jordan)
+plot(x[1:lineas_totales], y[1:lineas_totales],col = "blue", type="l")
+lines( x[(lineas_totales):length(x)], y[(lineas_totales):length(x)], col="red")
 ```
 
 
-# **6. Referencias Bibliográficas**
+# **8. Referencias Bibliográficas**
 
 1. EpData. (2019). Evolución del nivel de estudios alcanzado por la población española [Data set]. EpData - La actualidad informativa en datos estadísticos de Europa Press.
 
