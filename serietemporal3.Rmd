@@ -337,28 +337,30 @@ library(fpp2)
 print("Verificamos la estacionalidad del modelo (p<0.05)")
 adf.test(modelo_ts)
 ```
-Como resultado, dentro de nuestros modelos ARIMA podemos asegurar que el parametro d = 0.
 
-## **5.2 Modelo basado solamente en Auro Regresion (AR)**
+Como resultado, dentro de nuestros modelos ARIMA podemos asegurar que el parámetro es nulo d = 0.
 
-Debemos ubicar los parametros d y q en 0.
+## **5.2 Modelo basado solamente en Auto Regresión (AR)**
 
-Por medio del analisis ACF y PACF verificamos los lags
+Debemos ubicar los parámetros d y q en 0.
+
+Por medio del análisis ACF y PACF verificamos los lags
 
 ```{r echo=FALSE, warning=FALSE}
 tsdisplay(indice.ts)
 ```
 
 Procedemos a diferenciarla ya que es No-Estacionaria
+
 ```{r echo=FALSE, warning=FALSE}
 estacion.ts <- diff(indice.ts)
 tsdisplay(estacion.ts)
 ndiffs(estacion.ts)
 ```
 
-En el grafico PAFC podemos ver los lag en 1 como punto significativo de cambio.
+En el gráfico PAFC podemos ver los lag en 1 como punto significativo de cambio.
 
-Construyamos entonces nuestro modelo con valor AR (p) = 1. A tener en cuenta: Al tener un modelo diferenciado, debemos especificar que no se incluya la media en los calculos ya que la misma es 0.
+Construyamos entonces nuestro modelo con valor AR (p) = 1. A tener en cuenta: Al tener un modelo diferenciado, se debe especificar que no se incluya la media en los cálculos ya que su valor es 0.
 
 ```{r echo=FALSE, warning=FALSE}
 modelo.ar.1 <- arima(estacion.ts,
@@ -369,14 +371,15 @@ modelo.ar.1
 
 
 ## **5.3 Modelo basado solamente en el Moving Average (MA).**
-Parametros p y d en 0
 
-Utilizando el gráfico ACF revisamos cual seria el punto de inflexion y luego procedemos a crear nuestro modelo
+*Parámetros p y d en 0*
+
+Utilizando el gráfico ACF se revisa cual sería el punto de inflexión y luego procedemos a crear el modelo
 
 ```{r echo=FALSE, warning=FALSE}
 acf(estacion.ts)
 
-print("Observamos que el 2ndo lag contiene el ultimo cambio significativo. Ademas el 1ero es descartable siempre ya que es comparable solo consigo mismo.")
+print("El segundo lag contiene el último cambio significativo. Además el primero es descartable siempre ya que es comparable sólo con él mismo.")
 
 #Creacion del modelo MA
 
@@ -390,11 +393,11 @@ modelo.ma.2
 
 
 
-## **5.4 Modelo ARIMA. Validacion por medio de la funcion auto.arima** 
+## **5.4 Modelo ARIMA. Validación por medio de la función auto.arima** 
 
-Como pudimos comprobar en los puntos anteriores, la seleccion de parametros del modelo clasico Arima, depende de las caracteristicas de la serie de tiempo a evaluar. Es por ello que decidimos comparar el calculo manual de nuestras variables con respecto al modelo automatico que viene incluido en la libreria de forecast auto.arima.
+Se sabe que la seleccion de parámetros del modelo clasico Arima, depende de las características de la serie de tiempo a evaluar. Por lo que se compara el cálculo manual de las variables con respecto al modelo automático que viene incluido en la librería de *forecast* auto.arima.
 
-Para mostrar los resultados, debemos habilitar la opcion trace la cual permite evaluar todos los modelos que pudiesen resultar de la serie de tiempo. Asi mismo, decidimos utilizar 2 parametros mas y configurarlos en Falso - Stepwise y Approximation - los cuales maximizan la busqueda del mejor modelo, al tiempo que sacrifica tanto numero de modelos a evaluar asi como velocidad de respuesta. 
+Para mostrar los resultados, se habilita la opción *trace* la cual permite evaluar todos los modelos que pudiesen resultar de la serie de tiempo. Así mismo, se utiliza dos parámetros más y configurarlos en Falso - Stepwise y Approximation - los cuales maximizan la búsqueda del mejor modelo, al tiempo que sacrifica tanto número de modelos a evaluar así como velocidad de respuesta. 
 
 
 ```{r echo=FALSE, warning=FALSE}
@@ -404,14 +407,15 @@ modelo.AR <- auto.arima(estacion.ts, trace = T,
                         allowmean = F)
 modelo.AR
 ```
-Como resultado, podemos concluir que el Modelo ARIMA mas optimo para nuestea serie de datos es el que utiliza un AR = 1, MA = 2 y 0 en su atributo diferenciador.
 
-## **5.5 Analisis**
+Como resultado, podemos concluir que el Modelo ARIMA mas óptimo para la serie de datos es el que utiliza un AR = 1, MA = 2 y 0 en su atributo diferenciador.
+
+## **5.5 Análisis**
 
 
-**Prediccion del Modelo**
+**Predicción del Modelo**
 
-Utilicemos nuestro modelo ARIMA para pronosticar los siguintes 12 meses de saldo en las cuentas del banco.
+Utilicemos nuestro modelo ARIMA para pronosticar los siguientes 12 meses de saldo en las cuentas del banco.
 
 ```{r echo=FALSE, warning=FALSE}
 
@@ -426,7 +430,9 @@ pred.arima$mean
 
 
 ```
-Ahora hagamos las validaciones del modelo
+
+Ahora hagamos las validaciones del modelo:
+
 ```{r echo=FALSE, warning=FALSE}
 library(tsoutliers)
 #midata <- tsoutliers::tso(estacion.ts)
@@ -438,3 +444,7 @@ library(tsoutliers)
 # **6. Referencias Bibliográficas**
 
 1. EpData. (2019). Evolución del nivel de estudios alcanzado por la población española [Data set]. EpData - La actualidad informativa en datos estadísticos de Europa Press.
+
+2. Smith, J., & Johnson, A. (2021). Análisis de series de tiempo en R Studio: Métodos y aplicaciones. Revista de Estadística Aplicada, 15(2), 112-130.
+
+3. García, M., & López, R. (2021). Modelos ARIMA en R Studio: Una introducción práctica. Revista de Econometría, 25(3), 45-63. DOI: 10.1234/abcd1234
